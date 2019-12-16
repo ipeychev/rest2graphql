@@ -20,7 +20,7 @@ npm install
 curl 'http://localhost:3000/api/employees' | jq
 ```
 
-2. Get emplouyee with given id
+2. Fetch an employee with given id
 
 ```
 curl http://localhost:3000/api/employees/:id | jq
@@ -92,3 +92,6 @@ mutation {
   }
 }
 ```
+
+
+All `:id` shown above should be replaced with :id
