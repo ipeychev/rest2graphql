@@ -38,8 +38,8 @@ async function save(employee) {
       validateEmployee(employee);
       const newEmployee = employee;
       const lastEmployee = employeesData[employeesData.length - 1] || {id: 0};
-      const lastid = lastEmployee.id;
-      newEmployee.id = lastid + 1;
+      const lastId = lastEmployee.id;
+      newEmployee.id = lastId + 1;
       newEmployee.friends = newEmployee.friends || [];
       employeesData.push(employee);
       resolve(employee);
