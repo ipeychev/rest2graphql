@@ -13,7 +13,7 @@ const employeesData = [
  */
 function validateEmployee(employee) {
   if (!(employee.name && employee.department)) {
-    throw new Error('Employee Name and department is required');
+    throw new Error('Employee name and department are required');
   }
 }
 
