@@ -38,6 +38,10 @@ curl -d "name=Nolan&department=IT" -X POST http://localhost:3000/api/employees
 curl -X DELETE http://localhost:3000/api/employees/:id
 ```
 
+# Examples
+
+[Here](https://github.com/ipeychev/rest2graphql/blob/master/examples/examples.gif) is a screencast with some GraphQL examples.
+
 5. Add a friend to an employee
 
 ```
@@ -95,3 +99,9 @@ mutation {
 
 
 All `:id` shown above should be replaced with an existing employees Id
+
+# Examples
+
+GraphQL examples:
+
+![examples](/examples/examples.gif)
