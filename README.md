@@ -14,7 +14,7 @@ npm install
 `npm run start` or `npm run start:watch`
 
 # REST API
-1. Fetch all employees 
+1. Fetch all employees
 
 ```
 curl 'http://localhost:3000/api/employees' | jq
@@ -94,4 +94,4 @@ mutation {
 ```
 
 
-All `:id` shown above should be replaced with :id
+All `:id` shown above should be replaced with an existing employees Id
