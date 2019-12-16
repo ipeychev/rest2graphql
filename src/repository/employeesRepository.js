@@ -1,11 +1,11 @@
-const employeesData = [
-  {
-    department: 'IT',
-    friends: [],
-    id: 1,
-    name: 'Christie',
-  },
-];
+const path = require('path');
+const tingodb = require('tingodb');
+
+const Engine = tingodb();
+
+const db = new Engine.Db(path.join(__dirname, '../../', 'db'), {});
+
+const employeesCollection = db.collection('employees');
 
 /**
  * Validates an employee and throws an exception if employee is invalid.
@@ -22,30 +22,74 @@ function validateEmployee(employee) {
  * @returns {Promise} Resolves with all employees
  */
 async function getAll() {
-  return new Promise(resolve => {
-    resolve(employeesData);
+  return new Promise((resolve, reject) => {
+    employeesCollection.find().toArray((error, items) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(items);
+      }
+    });
   });
 }
 
 /**
- * Saves an employee to the database.
+ * Adds a friend to an employee.
+ * @param {number} id The employee id
+ * @param {number} friendId The friend Id to be added as a friend
+ * @returns {object} The employee with the added friend
+ */
+async function addFriend(id, friendId) {
+  const employee = await getById(id);
+
+  if (!employee) {
+    throw new Error(`No employee with Id ${id} was found.`);
+  }
+
+  const friend = await getById(friendId);
+
+  if (!friend) {
+    throw new Error(`No friend with id ${friendId} was found.`);
+  }
+
+  employee.friends.push(friend);
+
+  employeesCollection.save(employee, error => {
+    if (error) {
+      throw error;
+    } else {
+      return employee;
+    }
+  });
+}
+
+/**
+ * Adds a new employee to the database.
  * @param {object} employee The employee to be saved
  * @returns {Promise} Resolves with the saved employee
  */
-async function save(employee) {
+async function addNewEmployee(employee) {
   return new Promise((resolve, reject) => {
-    try {
-      validateEmployee(employee);
-      const newEmployee = employee;
-      const lastEmployee = employeesData[employeesData.length - 1] || {id: 0};
-      const lastId = lastEmployee.id;
-      newEmployee.id = lastId + 1;
-      newEmployee.friends = newEmployee.friends || [];
-      employeesData.push(employee);
-      resolve(employee);
-    } catch (error) {
-      reject(error);
-    }
+    validateEmployee(employee);
+
+    employeesCollection
+      .find()
+      .sort({id: -1})
+      .limit(1)
+      .toArray((error, items) => {
+        if (error) {
+          reject(error);
+        } else {
+          const lastEmployee = items[0] || {id: 0};
+
+          const newEmployee = employee;
+          const lastId = lastEmployee.id;
+          newEmployee.id = lastId + 1;
+          newEmployee.friends = [];
+          employeesCollection.insert([newEmployee]);
+          resolve(newEmployee);
+        }
+      });
   });
 }
 
@@ -57,11 +101,15 @@ async function save(employee) {
 async function getById(id) {
   return new Promise((resolve, reject) => {
     try {
-      const employee = employeesData.filter(item => item.id === id);
-      if (employee.length === 0) {
-        throw new Error(`Employee Resource with id: ${id} not found`);
-      }
-      resolve(employee[0]);
+      employeesCollection.findOne({id}, (error, item) => {
+        if (error) {
+          reject(error);
+        } else if (!item) {
+          reject(new Error(`Employee with id: ${id} not found`));
+        } else {
+          resolve(item);
+        }
+      });
     } catch (error) {
       reject(error);
     }
@@ -75,22 +123,19 @@ async function getById(id) {
  */
 async function deleteById(id) {
   return new Promise((resolve, reject) => {
-    try {
-      const employeeIndex = employeesData.findIndex(item => item.id === id);
-      if (employeeIndex === -1) {
-        throw new Error(`Employee Resource with id: ${id} not found`);
+    employeesCollection.findAndRemove({id}, (error, item) => {
+      if (error) {
+        reject(error);
       }
-      employeesData.splice(employeeIndex, employeeIndex + 1);
-      resolve({id});
-    } catch (error) {
-      reject(error);
-    }
+      resolve(item);
+    });
   });
 }
 
 module.exports = {
+  addFriend,
+  addNewEmployee,
   deleteById,
   getAll,
   getById,
-  save,
 };

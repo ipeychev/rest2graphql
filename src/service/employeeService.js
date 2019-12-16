@@ -9,12 +9,12 @@ async function getAll() {
 }
 
 /**
- * Saves an employee to the database.
+ * Adds a new employee to the database.
  * @param {object} employee The employee to be saved
  * @returns {Promise} Resolves with the saved employee
  */
-async function save(employee) {
-  return employeeRepository.save(employee);
+async function addNewEmployee(employee) {
+  return employeeRepository.addNewEmployee(employee);
 }
 
 /**
@@ -42,25 +42,13 @@ async function deleteById(id) {
  * @returns {object} The employee with the added friend
  */
 async function addFriend(id, friendId) {
-  const employee = await getById(id);
-
-  if (employee) {
-    const friend = await getById(friendId);
-
-    if (!friend) {
-      throw new Error(`No employee with Id ${friendId} was found.`);
-    }
-
-    employee.friends.push(friend);
-  }
-
-  return employee;
+  return employeeRepository.addFriend(parseInt(id, 10), parseInt(friendId, 10));
 }
 
 module.exports = {
   addFriend,
+  addNewEmployee,
   deleteById,
   getAll,
   getById,
-  save,
 };
