@@ -9,8 +9,7 @@ router.get('/', async (req, res) => {
     res.json(await employeeService.getAll());
   } catch (error) {
     res.json({
-      error: 400,
-      reason: error.message,
+      error: error.message,
     });
   }
 });
@@ -22,8 +21,7 @@ router.get('/:id', async (req, res) => {
     return res.json(await employeeService.getById(employeeId));
   } catch (error) {
     res.json({
-      error: 400,
-      reason: error.message,
+      error: error.message,
     });
   }
 });
@@ -34,8 +32,7 @@ router.post('/', async (req, res) => {
     return res.json(await employeeService.addNewEmployee(newEmployee));
   } catch (error) {
     res.json({
-      error: 400,
-      reason: error.message,
+      error: error.message,
     });
   }
 });
@@ -48,8 +45,7 @@ router.post('/friend', async (req, res) => {
     return res.json(await employeeService.addFriend(employeeId, friendId));
   } catch (error) {
     res.json({
-      error: 400,
-      reason: error.message,
+      error: error.message,
     });
   }
 });
@@ -60,8 +56,7 @@ router.delete('/:id', async (req, res) => {
     return res.json(await employeeService.deleteById(employeeId));
   } catch (error) {
     res.json({
-      error: 400,
-      reason: error.message,
+      error: error.message,
     });
   }
 });

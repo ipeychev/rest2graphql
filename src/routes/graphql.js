@@ -40,7 +40,8 @@ const schema = buildSchema(`
 const rootResolver = {
   addFriend: addFriendInput =>
     employeesService.addFriend(addFriendInput.id, addFriendInput.friendId),
-  createEmployee: employeeInput => employeesService.save(employeeInput),
+  createEmployee: employeeInput =>
+    employeesService.addNewEmployee(employeeInput),
   deleteEmployee: employeeInput =>
     employeesService.deleteById(employeeInput.id),
   employee: employeeInput =>

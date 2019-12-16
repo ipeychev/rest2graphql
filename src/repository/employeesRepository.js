@@ -1,9 +1,15 @@
+const fs = require('fs');
 const path = require('path');
 const tingodb = require('tingodb');
 
 const Engine = tingodb();
 
-const db = new Engine.Db(path.join(__dirname, '../../', 'db'), {});
+const employeeDir = path.join(__dirname, '../../', '__db');
+if (!fs.existsSync(employeeDir)) {
+  fs.mkdirSync(employeeDir);
+}
+
+const db = new Engine.Db(employeeDir, {});
 
 const employeesCollection = db.collection('employees');
 

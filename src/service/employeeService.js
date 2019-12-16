@@ -5,7 +5,10 @@ const employeeRepository = require('../repository/employeesRepository');
  * @returns {Promise} Resolves with all employees
  */
 async function getAll() {
-  return employeeRepository.getAll();
+  const all = await employeeRepository.getAll();
+
+  console.log('ALL', all);
+  return all;
 }
 
 /**
