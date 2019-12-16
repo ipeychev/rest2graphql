@@ -38,15 +38,15 @@ const schema = buildSchema(`
 `);
 
 const rootResolver = {
-  addFriend: addFriendInput =>
+  addFriend: async addFriendInput =>
     employeesService.addFriend(addFriendInput.id, addFriendInput.friendId),
-  createEmployee: employeeInput =>
+  createEmployee: async employeeInput =>
     employeesService.addNewEmployee(employeeInput),
-  deleteEmployee: employeeInput =>
+  deleteEmployee: async employeeInput =>
     employeesService.deleteById(employeeInput.id),
-  employee: employeeInput =>
+  employee: async employeeInput =>
     employeesService.getById(employeeInput && employeeInput.id),
-  employees: employeesService.getAll(),
+  employees: async () => employeesService.getAll(),
 };
 
 const graphql = graphqlHTTP({
