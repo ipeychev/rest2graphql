@@ -11,7 +11,7 @@
     "format": "prettier --single-quote --no-bracket-spacing --trailing-comma es5 --write \"{src/**/*.js,tests/**/*.js,*.js}\" && eslint --fix \"{src/**/*.js,tests/**/*.js,*.js}\""
   },
   "dependencies": {
-    "express": "4.17.1",
+    "express": "4.17.3",
     "express-graphql": "0.9.0",
     "graphql": "14.5.8",
     "http-errors": "1.7.3",
